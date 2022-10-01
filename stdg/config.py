@@ -6,9 +6,9 @@ settings = configparser.ConfigParser()
 settings.read('stdg.ini')
 
 store_settings = settings['shopify']
-shop_url = "https://%s:%s@%s.myshopify.com/admin" % (
-    store_settings['API_KEY'], store_settings['API_PASS'], store_settings['STORE'])
-shopify.ShopifyResource.set_site(shop_url)
+
+session = shopify.Session(shop_url=store_settings["SHOP_URL"], version=store_settings["API_VERSION"], token=store_settings["API_TOKEN"])
+shopify.ShopifyResource.activate_session(session)
 
 postal_data = pd.read_csv("zip-codes.txt", header=None, converters={0: lambda x: str(x)})
 postal_data.columns = ["postal_code", "lat", "long", "city", "state", "county", "unique"]
